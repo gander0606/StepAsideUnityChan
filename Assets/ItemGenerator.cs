@@ -19,29 +19,22 @@ public class ItemGenerator : MonoBehaviour
     //Unityちゃんのオブジェクト
     private GameObject unitychan;
 
-    //アイテム生成間隔
-    private float interval;
-    //経過時間
-    private float time = 0f;
+    //アイテム生成の初期位置
+    private float points=-210;
 
     // Use this for initialization
     void Start()
     {
         // Unityちゃんのオブジェクトを取得
         this.unitychan = GameObject.Find("unitychan");
-
-        //アイテム生成の時間間隔を決定する
-        interval = 1f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //時間計測
-        time += Time.deltaTime;
- 
-        //アイテムの生成を時間で行う
-        if (time > interval && time < 2f)
+        //Unityちゃんがアイテム生成位置を超えるとアイテムを生成する
+        //ゴール位置手前でアイテム生成を終了させる
+        if (points < unitychan.transform.position.z && unitychan.transform.position.z < 70)
         {
 
             //どのアイテムを出すのかをランダムに設定
@@ -53,7 +46,7 @@ public class ItemGenerator : MonoBehaviour
                 {
                     GameObject cone = Instantiate(conePrefab) as GameObject;
                     cone.transform.position = new Vector3(4 * j, cone.transform.position.y, unitychan.transform.position.z + 55);
-                }                  
+                }
             }
             else
             {
@@ -80,15 +73,9 @@ public class ItemGenerator : MonoBehaviour
                 }
             }
 
-            //Unityちゃんの位置によってアイテム生成処理を終了させる
-            if (unitychan.transform.position.z < 55)
-            {
-                time = 0f;
-            }
-            else
-            {
-                time = 2f;
-            }           
-        }                   
+            //アイテム生成位置を前方へ動かす
+            points = points + 15;
+        
+        }
     }
 }
